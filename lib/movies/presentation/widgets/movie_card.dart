@@ -5,6 +5,7 @@ import 'package:nepflix/core/infrastructure/shared/api_constants.dart';
 
 import 'package:nepflix/core/infrastructure/shared/app_extensions.dart';
 import 'package:nepflix/movies/domain/movie.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -36,7 +37,7 @@ class MovieCard extends StatelessWidget {
                 colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                stops: const [0.6, 0.95],
+                stops: const [0.75, 0.95],
               ),
             ),
             child: Padding(

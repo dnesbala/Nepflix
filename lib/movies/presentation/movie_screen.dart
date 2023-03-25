@@ -5,6 +5,8 @@ import 'package:nepflix/core/infrastructure/shared/app_extensions.dart';
 import 'package:nepflix/movies/application/now_playing_movie/now_playing_movie_cubit.dart';
 import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dart';
 import 'package:nepflix/movies/domain/movie.dart';
+import 'package:nepflix/movies/presentation/shimmers/movie_card_shimmer.dart';
+import 'package:nepflix/movies/presentation/shimmers/now_playing_movie_card_shimmer.dart';
 import 'package:nepflix/movies/presentation/widgets/movie_card.dart';
 
 class MovieScreen extends StatelessWidget {
@@ -31,6 +33,18 @@ class MovieScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
                 nowPlayingMoviesState.maybeWhen(
+                  loading: () => SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        NowPlayingMovieCardShimmer(),
+                        NowPlayingMovieCardShimmer(),
+                        NowPlayingMovieCardShimmer(),
+                        NowPlayingMovieCardShimmer(),
+                        NowPlayingMovieCardShimmer(),
+                      ],
+                    ),
+                  ),
                   loaded: (nowPlayingMovies) => SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -102,13 +116,23 @@ class MovieScreen extends StatelessWidget {
             ),
           ),
           popularMoviesState.maybeWhen(
-            loading: () => SliverToBoxAdapter(
-              child: const Center(
-                child: CircularProgressIndicator(),
+            loading: () => SliverPadding(
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              sliver: SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 2 / 3,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) => const MovieCardShimmer(),
+                  childCount: 8,
+                ),
               ),
             ),
             loaded: (popularMovies) => SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               sliver: SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
