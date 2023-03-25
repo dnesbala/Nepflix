@@ -5,23 +5,23 @@ import 'package:nepflix/movies/domain/movie.dart';
 import 'package:nepflix/movies/infrastructure/movies_repository.dart';
 
 part 'movie_cubit.freezed.dart';
-part 'movie_state.dart';
+part 'popular_movie_state.dart';
 
-class MovieCubit extends Cubit<MovieState> {
+class PopularMovieCubit extends Cubit<PopularMovieState> {
   final MoviesRepository _repository;
 
-  MovieCubit(
+  PopularMovieCubit(
     this._repository,
-  ) : super(const MovieState.initial());
+  ) : super(const PopularMovieState.initial());
 
   Future<void> getPopularMovies() async {
-    emit(const MovieState.loading());
+    emit(const PopularMovieState.loading());
     final movieOrFailure = await _repository.getPopularMovies();
-    emit(movieOrFailure.fold(
-      (l) => MovieState.failure(l.errorMessage ?? ""),
-      (r) => MovieState.loaded(
-        r.results,
+    emit(
+      movieOrFailure.fold(
+        (l) => PopularMovieState.failure(l.errorMessage ?? ""),
+        (r) => PopularMovieState.loaded(r.results),
       ),
-    ));
+    );
   }
 }

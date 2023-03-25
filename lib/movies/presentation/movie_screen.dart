@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nepflix/core/infrastructure/shared/api_constants.dart';
 import 'package:nepflix/core/infrastructure/shared/app_extensions.dart';
-import 'package:nepflix/movies/application/movie/movie_cubit.dart';
+import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dart';
+import 'package:nepflix/movies/domain/movie.dart';
 import 'package:nepflix/movies/presentation/widgets/movie_card.dart';
 
 class MovieScreen extends StatelessWidget {
@@ -9,7 +11,7 @@ class MovieScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final popularMoviesState = context.watch<MovieCubit>().state;
+    final popularMoviesState = context.watch<PopularMovieCubit>().state;
 
     return Scaffold(
       body: CustomScrollView(
@@ -33,15 +35,17 @@ class MovieScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        _nowPlayingMovieCard(context),
-                        _nowPlayingMovieCard(context),
-                        _nowPlayingMovieCard(context),
-                      ],
+                  popularMoviesState.maybeWhen(
+                    loaded: (nowPlayingMovies) => SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: nowPlayingMovies
+                            .map(
+                                (movie) => _nowPlayingMovieCard(context, movie))
+                            .toList(),
+                      ),
                     ),
+                    orElse: () => SizedBox(),
                   ),
                 ],
               ),
@@ -108,7 +112,7 @@ class MovieScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
             ),
-            loaded: (movies) => SliverPadding(
+            loaded: (popularMovies) => SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               sliver: SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -119,9 +123,9 @@ class MovieScreen extends StatelessWidget {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) => MovieCard(
-                    movie: movies[index],
+                    movie: popularMovies[index],
                   ),
-                  childCount: movies.length,
+                  childCount: popularMovies.length,
                 ),
               ),
             ),
@@ -132,7 +136,7 @@ class MovieScreen extends StatelessWidget {
     );
   }
 
-  Widget _nowPlayingMovieCard(BuildContext context) {
+  Widget _nowPlayingMovieCard(BuildContext context, Movie movie) {
     return Stack(
       children: [
         Container(
@@ -143,8 +147,8 @@ class MovieScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: const NetworkImage(
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png",
+              image: NetworkImage(
+                "${ApiConstants.imageBasePath}/${movie.posterPath}",
               ),
             ),
           ),
@@ -170,21 +174,21 @@ class MovieScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "movie.title",
+                movie.title,
                 style: context.textTheme.headline5!.copyWith(
                   color: Colors.white,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
-                "{movie.releaseDate}",
+                "${movie.releaseDate}",
                 style: context.textTheme.subtitle1!.copyWith(
                   color: Colors.white,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
-                "{movie.voteAverage} stars ({movie.voteCount})",
+                "${movie.voteAverage} stars (${movie.voteCount})",
                 style: context.textTheme.subtitle1!.copyWith(
                   color: Colors.white,
                 ),
