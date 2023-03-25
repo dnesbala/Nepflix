@@ -35,6 +35,14 @@ class AppTheme {
           fontSize: 14,
           color: lightThemeTextColor,
         ),
+        subtitle1: TextStyle(
+          fontSize: 12,
+          color: lightThemeTextColor,
+        ),
+        subtitle2: TextStyle(
+          fontSize: 10,
+          color: lightThemeTextColor,
+        ),
       ),
     );
   }
@@ -65,6 +73,12 @@ class AppTheme {
           color: darkThemeTextColor,
         ),
         headline6: TextStyle(
+          color: darkThemeTextColor,
+        ),
+        subtitle1: TextStyle(
+          color: darkThemeTextColor,
+        ),
+        subtitle2: TextStyle(
           color: darkThemeTextColor,
         ),
       ),

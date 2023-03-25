@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepflix/core/infrastructure/shared/app_extensions.dart';
+import 'package:nepflix/movies/application/movie/movie_cubit.dart';
 import 'package:nepflix/movies/presentation/widgets/movie_card.dart';
 
 class MovieScreen extends StatelessWidget {
@@ -7,6 +9,8 @@ class MovieScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final popularMoviesState = context.watch<MovieCubit>().state;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -98,20 +102,30 @@ class MovieScreen extends StatelessWidget {
             ),
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 10)),
-          SliverPadding(
-            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-            sliver: SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 2 / 3,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) => const MovieCard(),
-                childCount: 7,
+          popularMoviesState.maybeWhen(
+            loading: () => SliverToBoxAdapter(
+              child: const Center(
+                child: CircularProgressIndicator(),
               ),
             ),
+            loaded: (movies) => SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              sliver: SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 2 / 3,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) => MovieCard(
+                    movie: movies[index],
+                  ),
+                  childCount: movies.length,
+                ),
+              ),
+            ),
+            orElse: () => SliverToBoxAdapter(child: SizedBox()),
           ),
         ],
       ),
@@ -119,43 +133,66 @@ class MovieScreen extends StatelessWidget {
   }
 
   Widget _nowPlayingMovieCard(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      height: 170,
-      width: context.deviceWidth * .8,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: const NetworkImage(
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png",
-          ),
-          colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.8), BlendMode.dstATop),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 7),
-        child: Column(
-          children: [
-            Text(
-              "Movie Title",
-              style: context.textTheme.headline5!.copyWith(
-                color: Colors.white,
+    return Stack(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          height: 170,
+          width: context.deviceWidth * .8,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: const NetworkImage(
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png",
               ),
             ),
-            const Spacer(),
-            Text(
-              "Rating",
-              style: context.textTheme.headline5!.copyWith(color: Colors.white),
-            ),
-            Text(
-              "Release Date",
-              style: context.textTheme.headline6!.copyWith(color: Colors.white),
-            ),
-          ],
+          ),
         ),
-      ),
+        Positioned.fill(
+          child: Container(
+            width: double.maxFinite,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const [0.6, 0.95],
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          left: 20,
+          bottom: 10,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "movie.title",
+                style: context.textTheme.headline5!.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                "{movie.releaseDate}",
+                style: context.textTheme.subtitle1!.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                "{movie.voteAverage} stars ({movie.voteCount})",
+                style: context.textTheme.subtitle1!.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
