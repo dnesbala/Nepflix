@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepflix/core/infrastructure/shared/api_constants.dart';
 import 'package:nepflix/core/infrastructure/shared/app_extensions.dart';
+import 'package:nepflix/movies/application/now_playing_movie/now_playing_movie_cubit.dart';
 import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dart';
 import 'package:nepflix/movies/domain/movie.dart';
 import 'package:nepflix/movies/presentation/widgets/movie_card.dart';
@@ -11,101 +12,95 @@ class MovieScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final nowPlayingMoviesState = context.watch<NowPlayingMovieCubit>().state;
     final popularMoviesState = context.watch<PopularMovieCubit>().state;
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            backgroundColor: Color(0xFFEF1736).withOpacity(0.8),
-            pinned: true,
-            expandedHeight: 280,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40, left: 10),
-                    child: Text(
-                      "Now Playing Movies",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4!
-                          .copyWith(color: Colors.white),
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 40, left: 10),
+                  child: Text(
+                    "Top Rated Movies",
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                nowPlayingMoviesState.maybeWhen(
+                  loaded: (nowPlayingMovies) => SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: nowPlayingMovies
+                          .map((movie) => _nowPlayingMovieCard(context, movie))
+                          .toList(),
                     ),
                   ),
-                  const SizedBox(height: 15),
-                  popularMoviesState.maybeWhen(
-                    loaded: (nowPlayingMovies) => SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: nowPlayingMovies
-                            .map(
-                                (movie) => _nowPlayingMovieCard(context, movie))
-                            .toList(),
-                      ),
-                    ),
-                    orElse: () => SizedBox(),
-                  ),
-                ],
-              ),
+                  orElse: () => SizedBox(),
+                ),
+              ],
             ),
+          ),
+          SliverAppBar(
+            pinned: true,
+            backgroundColor: Colors.white,
+            elevation: 0,
+            expandedHeight: 0,
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(0),
+              preferredSize: Size.fromHeight(0),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: ColoredBox(
-                  color: Colors.white,
-                  child: Row(
-                    children: [
-                      ActionChip(
-                        backgroundColor: Color(0xFFEF1736),
-                        label: const Text(
-                          "All",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                child: Row(
+                  children: [
+                    ActionChip(
+                      backgroundColor: Color(0xFFEF1736),
+                      label: const Text(
+                        "All",
+                        style: TextStyle(
+                          color: Colors.white,
                         ),
-                        onPressed: () {},
                       ),
-                      const SizedBox(width: 5),
-                      ActionChip(
-                        label: const Text("Horror"),
-                        onPressed: () {},
-                      ),
-                      const SizedBox(width: 5),
-                      ActionChip(
-                        label: const Text("Romance"),
-                        onPressed: () {},
-                      ),
-                      const SizedBox(width: 5),
-                      ActionChip(
-                        label: const Text("Biography"),
-                        onPressed: () {},
-                      ),
-                      const SizedBox(width: 5),
-                      ActionChip(
-                        label: const Text("Science & Fiction"),
-                        onPressed: () {},
-                      ),
-                      const SizedBox(width: 5),
-                      ActionChip(
-                        label: const Text("Action"),
-                        onPressed: () {},
-                      ),
-                      const SizedBox(width: 5),
-                      ActionChip(
-                        label: const Text("Thriller"),
-                        onPressed: () {},
-                      ),
-                      const SizedBox(width: 5),
-                    ],
-                  ),
+                      onPressed: () {},
+                    ),
+                    const SizedBox(width: 5),
+                    ActionChip(
+                      label: const Text("Horror"),
+                      onPressed: () {},
+                    ),
+                    const SizedBox(width: 5),
+                    ActionChip(
+                      label: const Text("Romance"),
+                      onPressed: () {},
+                    ),
+                    const SizedBox(width: 5),
+                    ActionChip(
+                      label: const Text("Biography"),
+                      onPressed: () {},
+                    ),
+                    const SizedBox(width: 5),
+                    ActionChip(
+                      label: const Text("Science & Fiction"),
+                      onPressed: () {},
+                    ),
+                    const SizedBox(width: 5),
+                    ActionChip(
+                      label: const Text("Action"),
+                      onPressed: () {},
+                    ),
+                    const SizedBox(width: 5),
+                    ActionChip(
+                      label: const Text("Thriller"),
+                      onPressed: () {},
+                    ),
+                    const SizedBox(width: 5),
+                  ],
                 ),
               ),
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 10)),
           popularMoviesState.maybeWhen(
             loading: () => SliverToBoxAdapter(
               child: const Center(

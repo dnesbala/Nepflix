@@ -25,4 +25,22 @@ class MovieRemoteService {
       }
     }
   }
+
+  Future<MoviesResultDTO> getNowPlayingMovies() async {
+    try {
+      final response = await dio.get(
+        "https://api.themoviedb.org/3/movie/top_rated",
+        queryParameters: {
+          "api_key": "4130fb2a642d3801adc666aa95e857d5",
+        },
+      );
+      return MoviesResultDTO.fromJson(response.data);
+    } on DioError catch (e) {
+      if (e.isNoConnectionError) {
+        throw RestApiException(message: "No Internet Connection");
+      } else {
+        throw RestApiException(message: e.message ?? "");
+      }
+    }
+  }
 }

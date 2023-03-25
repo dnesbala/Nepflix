@@ -17,4 +17,13 @@ class MoviesRepository {
       throw left(MoviesFailure.api(errorMessage: e.message));
     }
   }
+
+  Future<Either<MoviesFailure, MoviesResult>> getNowPlayingMovies() async {
+    try {
+      final nowPlayingMovies = await remoteService.getNowPlayingMovies();
+      return right(nowPlayingMovies.toDomain());
+    } on RestApiException catch (e) {
+      throw left(MoviesFailure.api(errorMessage: e.message));
+    }
+  }
 }
