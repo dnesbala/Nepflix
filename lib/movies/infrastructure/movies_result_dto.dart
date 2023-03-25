@@ -11,8 +11,8 @@ class MoviesResultDTO with _$MoviesResultDTO {
   const factory MoviesResultDTO({
     required int page,
     required List<MovieDTO> results,
-    required int totalPages,
-    required int totalResults,
+    @JsonKey(name: "total_pages") required int totalPages,
+    @JsonKey(name: "total_results") required int totalResults,
   }) = _MoviesResultDTO;
 
   factory MoviesResultDTO.fromJson(Map<String, dynamic> json) =>

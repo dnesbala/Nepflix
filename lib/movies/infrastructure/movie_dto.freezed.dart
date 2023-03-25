@@ -21,18 +21,26 @@ MovieDTO _$MovieDTOFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$MovieDTO {
   bool get adult => throw _privateConstructorUsedError;
+  @JsonKey(name: "backdrop_path")
   String get backdropPath => throw _privateConstructorUsedError;
+  @JsonKey(name: "genre_ids")
   List<int> get genreIds => throw _privateConstructorUsedError;
   int get id => throw _privateConstructorUsedError;
-  OriginalLanguage get originalLanguage => throw _privateConstructorUsedError;
+  @JsonKey(name: "original_language")
+  String get originalLanguage => throw _privateConstructorUsedError;
+  @JsonKey(name: "original_title")
   String get originalTitle => throw _privateConstructorUsedError;
   String get overview => throw _privateConstructorUsedError;
   double get popularity => throw _privateConstructorUsedError;
+  @JsonKey(name: "poster_path")
   String get posterPath => throw _privateConstructorUsedError;
+  @JsonKey(name: "release_date")
   DateTime get releaseDate => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   bool get video => throw _privateConstructorUsedError;
+  @JsonKey(name: "vote_average")
   double get voteAverage => throw _privateConstructorUsedError;
+  @JsonKey(name: "vote_count")
   int get voteCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,19 +56,19 @@ abstract class $MovieDTOCopyWith<$Res> {
   @useResult
   $Res call(
       {bool adult,
-      String backdropPath,
-      List<int> genreIds,
+      @JsonKey(name: "backdrop_path") String backdropPath,
+      @JsonKey(name: "genre_ids") List<int> genreIds,
       int id,
-      OriginalLanguage originalLanguage,
-      String originalTitle,
+      @JsonKey(name: "original_language") String originalLanguage,
+      @JsonKey(name: "original_title") String originalTitle,
       String overview,
       double popularity,
-      String posterPath,
-      DateTime releaseDate,
+      @JsonKey(name: "poster_path") String posterPath,
+      @JsonKey(name: "release_date") DateTime releaseDate,
       String title,
       bool video,
-      double voteAverage,
-      int voteCount});
+      @JsonKey(name: "vote_average") double voteAverage,
+      @JsonKey(name: "vote_count") int voteCount});
 }
 
 /// @nodoc
@@ -111,7 +119,7 @@ class _$MovieDTOCopyWithImpl<$Res, $Val extends MovieDTO>
       originalLanguage: null == originalLanguage
           ? _value.originalLanguage
           : originalLanguage // ignore: cast_nullable_to_non_nullable
-              as OriginalLanguage,
+              as String,
       originalTitle: null == originalTitle
           ? _value.originalTitle
           : originalTitle // ignore: cast_nullable_to_non_nullable
@@ -161,19 +169,19 @@ abstract class _$$_MovieDTOCopyWith<$Res> implements $MovieDTOCopyWith<$Res> {
   @useResult
   $Res call(
       {bool adult,
-      String backdropPath,
-      List<int> genreIds,
+      @JsonKey(name: "backdrop_path") String backdropPath,
+      @JsonKey(name: "genre_ids") List<int> genreIds,
       int id,
-      OriginalLanguage originalLanguage,
-      String originalTitle,
+      @JsonKey(name: "original_language") String originalLanguage,
+      @JsonKey(name: "original_title") String originalTitle,
       String overview,
       double popularity,
-      String posterPath,
-      DateTime releaseDate,
+      @JsonKey(name: "poster_path") String posterPath,
+      @JsonKey(name: "release_date") DateTime releaseDate,
       String title,
       bool video,
-      double voteAverage,
-      int voteCount});
+      @JsonKey(name: "vote_average") double voteAverage,
+      @JsonKey(name: "vote_count") int voteCount});
 }
 
 /// @nodoc
@@ -222,7 +230,7 @@ class __$$_MovieDTOCopyWithImpl<$Res>
       originalLanguage: null == originalLanguage
           ? _value.originalLanguage
           : originalLanguage // ignore: cast_nullable_to_non_nullable
-              as OriginalLanguage,
+              as String,
       originalTitle: null == originalTitle
           ? _value.originalTitle
           : originalTitle // ignore: cast_nullable_to_non_nullable
@@ -268,19 +276,19 @@ class __$$_MovieDTOCopyWithImpl<$Res>
 class _$_MovieDTO extends _MovieDTO {
   const _$_MovieDTO(
       {required this.adult,
-      required this.backdropPath,
-      required final List<int> genreIds,
+      @JsonKey(name: "backdrop_path") required this.backdropPath,
+      @JsonKey(name: "genre_ids") required final List<int> genreIds,
       required this.id,
-      required this.originalLanguage,
-      required this.originalTitle,
+      @JsonKey(name: "original_language") required this.originalLanguage,
+      @JsonKey(name: "original_title") required this.originalTitle,
       required this.overview,
       required this.popularity,
-      required this.posterPath,
-      required this.releaseDate,
+      @JsonKey(name: "poster_path") required this.posterPath,
+      @JsonKey(name: "release_date") required this.releaseDate,
       required this.title,
       required this.video,
-      required this.voteAverage,
-      required this.voteCount})
+      @JsonKey(name: "vote_average") required this.voteAverage,
+      @JsonKey(name: "vote_count") required this.voteCount})
       : _genreIds = genreIds,
         super._();
 
@@ -290,9 +298,11 @@ class _$_MovieDTO extends _MovieDTO {
   @override
   final bool adult;
   @override
+  @JsonKey(name: "backdrop_path")
   final String backdropPath;
   final List<int> _genreIds;
   @override
+  @JsonKey(name: "genre_ids")
   List<int> get genreIds {
     if (_genreIds is EqualUnmodifiableListView) return _genreIds;
     // ignore: implicit_dynamic_type
@@ -302,24 +312,30 @@ class _$_MovieDTO extends _MovieDTO {
   @override
   final int id;
   @override
-  final OriginalLanguage originalLanguage;
+  @JsonKey(name: "original_language")
+  final String originalLanguage;
   @override
+  @JsonKey(name: "original_title")
   final String originalTitle;
   @override
   final String overview;
   @override
   final double popularity;
   @override
+  @JsonKey(name: "poster_path")
   final String posterPath;
   @override
+  @JsonKey(name: "release_date")
   final DateTime releaseDate;
   @override
   final String title;
   @override
   final bool video;
   @override
+  @JsonKey(name: "vote_average")
   final double voteAverage;
   @override
+  @JsonKey(name: "vote_count")
   final int voteCount;
 
   @override
@@ -393,19 +409,27 @@ class _$_MovieDTO extends _MovieDTO {
 abstract class _MovieDTO extends MovieDTO {
   const factory _MovieDTO(
       {required final bool adult,
-      required final String backdropPath,
-      required final List<int> genreIds,
+      @JsonKey(name: "backdrop_path")
+          required final String backdropPath,
+      @JsonKey(name: "genre_ids")
+          required final List<int> genreIds,
       required final int id,
-      required final OriginalLanguage originalLanguage,
-      required final String originalTitle,
+      @JsonKey(name: "original_language")
+          required final String originalLanguage,
+      @JsonKey(name: "original_title")
+          required final String originalTitle,
       required final String overview,
       required final double popularity,
-      required final String posterPath,
-      required final DateTime releaseDate,
+      @JsonKey(name: "poster_path")
+          required final String posterPath,
+      @JsonKey(name: "release_date")
+          required final DateTime releaseDate,
       required final String title,
       required final bool video,
-      required final double voteAverage,
-      required final int voteCount}) = _$_MovieDTO;
+      @JsonKey(name: "vote_average")
+          required final double voteAverage,
+      @JsonKey(name: "vote_count")
+          required final int voteCount}) = _$_MovieDTO;
   const _MovieDTO._() : super._();
 
   factory _MovieDTO.fromJson(Map<String, dynamic> json) = _$_MovieDTO.fromJson;
@@ -413,30 +437,38 @@ abstract class _MovieDTO extends MovieDTO {
   @override
   bool get adult;
   @override
+  @JsonKey(name: "backdrop_path")
   String get backdropPath;
   @override
+  @JsonKey(name: "genre_ids")
   List<int> get genreIds;
   @override
   int get id;
   @override
-  OriginalLanguage get originalLanguage;
+  @JsonKey(name: "original_language")
+  String get originalLanguage;
   @override
+  @JsonKey(name: "original_title")
   String get originalTitle;
   @override
   String get overview;
   @override
   double get popularity;
   @override
+  @JsonKey(name: "poster_path")
   String get posterPath;
   @override
+  @JsonKey(name: "release_date")
   DateTime get releaseDate;
   @override
   String get title;
   @override
   bool get video;
   @override
+  @JsonKey(name: "vote_average")
   double get voteAverage;
   @override
+  @JsonKey(name: "vote_count")
   int get voteCount;
   @override
   @JsonKey(ignore: true)

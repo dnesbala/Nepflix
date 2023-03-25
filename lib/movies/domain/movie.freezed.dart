@@ -20,7 +20,7 @@ mixin _$Movie {
   String get backdropPath => throw _privateConstructorUsedError;
   List<int> get genreIds => throw _privateConstructorUsedError;
   int get id => throw _privateConstructorUsedError;
-  OriginalLanguage get originalLanguage => throw _privateConstructorUsedError;
+  String get originalLanguage => throw _privateConstructorUsedError;
   String get originalTitle => throw _privateConstructorUsedError;
   String get overview => throw _privateConstructorUsedError;
   double get popularity => throw _privateConstructorUsedError;
@@ -45,7 +45,7 @@ abstract class $MovieCopyWith<$Res> {
       String backdropPath,
       List<int> genreIds,
       int id,
-      OriginalLanguage originalLanguage,
+      String originalLanguage,
       String originalTitle,
       String overview,
       double popularity,
@@ -105,7 +105,7 @@ class _$MovieCopyWithImpl<$Res, $Val extends Movie>
       originalLanguage: null == originalLanguage
           ? _value.originalLanguage
           : originalLanguage // ignore: cast_nullable_to_non_nullable
-              as OriginalLanguage,
+              as String,
       originalTitle: null == originalTitle
           ? _value.originalTitle
           : originalTitle // ignore: cast_nullable_to_non_nullable
@@ -157,7 +157,7 @@ abstract class _$$_MovieCopyWith<$Res> implements $MovieCopyWith<$Res> {
       String backdropPath,
       List<int> genreIds,
       int id,
-      OriginalLanguage originalLanguage,
+      String originalLanguage,
       String originalTitle,
       String overview,
       double popularity,
@@ -213,7 +213,7 @@ class __$$_MovieCopyWithImpl<$Res> extends _$MovieCopyWithImpl<$Res, _$_Movie>
       originalLanguage: null == originalLanguage
           ? _value.originalLanguage
           : originalLanguage // ignore: cast_nullable_to_non_nullable
-              as OriginalLanguage,
+              as String,
       originalTitle: null == originalTitle
           ? _value.originalTitle
           : originalTitle // ignore: cast_nullable_to_non_nullable
@@ -289,7 +289,7 @@ class _$_Movie implements _Movie {
   @override
   final int id;
   @override
-  final OriginalLanguage originalLanguage;
+  final String originalLanguage;
   @override
   final String originalTitle;
   @override
@@ -375,7 +375,7 @@ abstract class _Movie implements Movie {
       required final String backdropPath,
       required final List<int> genreIds,
       required final int id,
-      required final OriginalLanguage originalLanguage,
+      required final String originalLanguage,
       required final String originalTitle,
       required final String overview,
       required final double popularity,
@@ -395,7 +395,7 @@ abstract class _Movie implements Movie {
   @override
   int get id;
   @override
-  OriginalLanguage get originalLanguage;
+  String get originalLanguage;
   @override
   String get originalTitle;
   @override

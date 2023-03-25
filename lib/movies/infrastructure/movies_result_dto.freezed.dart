@@ -22,7 +22,9 @@ MoviesResultDTO _$MoviesResultDTOFromJson(Map<String, dynamic> json) {
 mixin _$MoviesResultDTO {
   int get page => throw _privateConstructorUsedError;
   List<MovieDTO> get results => throw _privateConstructorUsedError;
+  @JsonKey(name: "total_pages")
   int get totalPages => throw _privateConstructorUsedError;
+  @JsonKey(name: "total_results")
   int get totalResults => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +40,10 @@ abstract class $MoviesResultDTOCopyWith<$Res> {
       _$MoviesResultDTOCopyWithImpl<$Res, MoviesResultDTO>;
   @useResult
   $Res call(
-      {int page, List<MovieDTO> results, int totalPages, int totalResults});
+      {int page,
+      List<MovieDTO> results,
+      @JsonKey(name: "total_pages") int totalPages,
+      @JsonKey(name: "total_results") int totalResults});
 }
 
 /// @nodoc
@@ -89,7 +94,10 @@ abstract class _$$_MoviesResultDTOCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int page, List<MovieDTO> results, int totalPages, int totalResults});
+      {int page,
+      List<MovieDTO> results,
+      @JsonKey(name: "total_pages") int totalPages,
+      @JsonKey(name: "total_results") int totalResults});
 }
 
 /// @nodoc
@@ -135,8 +143,8 @@ class _$_MoviesResultDTO extends _MoviesResultDTO {
   const _$_MoviesResultDTO(
       {required this.page,
       required final List<MovieDTO> results,
-      required this.totalPages,
-      required this.totalResults})
+      @JsonKey(name: "total_pages") required this.totalPages,
+      @JsonKey(name: "total_results") required this.totalResults})
       : _results = results,
         super._();
 
@@ -154,8 +162,10 @@ class _$_MoviesResultDTO extends _MoviesResultDTO {
   }
 
   @override
+  @JsonKey(name: "total_pages")
   final int totalPages;
   @override
+  @JsonKey(name: "total_results")
   final int totalResults;
 
   @override
@@ -197,10 +207,11 @@ class _$_MoviesResultDTO extends _MoviesResultDTO {
 
 abstract class _MoviesResultDTO extends MoviesResultDTO {
   const factory _MoviesResultDTO(
-      {required final int page,
-      required final List<MovieDTO> results,
-      required final int totalPages,
-      required final int totalResults}) = _$_MoviesResultDTO;
+          {required final int page,
+          required final List<MovieDTO> results,
+          @JsonKey(name: "total_pages") required final int totalPages,
+          @JsonKey(name: "total_results") required final int totalResults}) =
+      _$_MoviesResultDTO;
   const _MoviesResultDTO._() : super._();
 
   factory _MoviesResultDTO.fromJson(Map<String, dynamic> json) =
@@ -211,8 +222,10 @@ abstract class _MoviesResultDTO extends MoviesResultDTO {
   @override
   List<MovieDTO> get results;
   @override
+  @JsonKey(name: "total_pages")
   int get totalPages;
   @override
+  @JsonKey(name: "total_results")
   int get totalResults;
   @override
   @JsonKey(ignore: true)

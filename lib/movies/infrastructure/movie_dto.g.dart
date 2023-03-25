@@ -8,44 +8,36 @@ part of 'movie_dto.dart';
 
 _$_MovieDTO _$$_MovieDTOFromJson(Map<String, dynamic> json) => _$_MovieDTO(
       adult: json['adult'] as bool,
-      backdropPath: json['backdropPath'] as String,
+      backdropPath: json['backdrop_path'] as String,
       genreIds:
-          (json['genreIds'] as List<dynamic>).map((e) => e as int).toList(),
+          (json['genre_ids'] as List<dynamic>).map((e) => e as int).toList(),
       id: json['id'] as int,
-      originalLanguage:
-          $enumDecode(_$OriginalLanguageEnumMap, json['originalLanguage']),
-      originalTitle: json['originalTitle'] as String,
+      originalLanguage: json['original_language'] as String,
+      originalTitle: json['original_title'] as String,
       overview: json['overview'] as String,
       popularity: (json['popularity'] as num).toDouble(),
-      posterPath: json['posterPath'] as String,
-      releaseDate: DateTime.parse(json['releaseDate'] as String),
+      posterPath: json['poster_path'] as String,
+      releaseDate: DateTime.parse(json['release_date'] as String),
       title: json['title'] as String,
       video: json['video'] as bool,
-      voteAverage: (json['voteAverage'] as num).toDouble(),
-      voteCount: json['voteCount'] as int,
+      voteAverage: (json['vote_average'] as num).toDouble(),
+      voteCount: json['vote_count'] as int,
     );
 
 Map<String, dynamic> _$$_MovieDTOToJson(_$_MovieDTO instance) =>
     <String, dynamic>{
       'adult': instance.adult,
-      'backdropPath': instance.backdropPath,
-      'genreIds': instance.genreIds,
+      'backdrop_path': instance.backdropPath,
+      'genre_ids': instance.genreIds,
       'id': instance.id,
-      'originalLanguage': _$OriginalLanguageEnumMap[instance.originalLanguage]!,
-      'originalTitle': instance.originalTitle,
+      'original_language': instance.originalLanguage,
+      'original_title': instance.originalTitle,
       'overview': instance.overview,
       'popularity': instance.popularity,
-      'posterPath': instance.posterPath,
-      'releaseDate': instance.releaseDate.toIso8601String(),
+      'poster_path': instance.posterPath,
+      'release_date': instance.releaseDate.toIso8601String(),
       'title': instance.title,
       'video': instance.video,
-      'voteAverage': instance.voteAverage,
-      'voteCount': instance.voteCount,
+      'vote_average': instance.voteAverage,
+      'vote_count': instance.voteCount,
     };
-
-const _$OriginalLanguageEnumMap = {
-  OriginalLanguage.en: 'en',
-  OriginalLanguage.th: 'th',
-  OriginalLanguage.es: 'es',
-  OriginalLanguage.ru: 'ru',
-};

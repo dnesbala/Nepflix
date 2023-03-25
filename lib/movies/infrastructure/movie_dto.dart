@@ -9,19 +9,19 @@ class MovieDTO with _$MovieDTO {
   const MovieDTO._();
   const factory MovieDTO({
     required bool adult,
-    required String backdropPath,
-    required List<int> genreIds,
+    @JsonKey(name: "backdrop_path") required String backdropPath,
+    @JsonKey(name: "genre_ids") required List<int> genreIds,
     required int id,
-    required OriginalLanguage originalLanguage,
-    required String originalTitle,
+    @JsonKey(name: "original_language") required String originalLanguage,
+    @JsonKey(name: "original_title") required String originalTitle,
     required String overview,
     required double popularity,
-    required String posterPath,
-    required DateTime releaseDate,
+    @JsonKey(name: "poster_path") required String posterPath,
+    @JsonKey(name: "release_date") required DateTime releaseDate,
     required String title,
     required bool video,
-    required double voteAverage,
-    required int voteCount,
+    @JsonKey(name: "vote_average") required double voteAverage,
+    @JsonKey(name: "vote_count") required int voteCount,
   }) = _MovieDTO;
 
   factory MovieDTO.fromJson(Map<String, dynamic> json) =>
