@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepflix/core/infrastructure/shared/api_constants.dart';
-import 'package:nepflix/core/infrastructure/shared/app_extensions.dart';
+import 'package:nepflix/core/presentation/shimmer_widget.dart';
+import 'package:nepflix/core/shared/api_constants.dart';
+import 'package:nepflix/core/shared/app_extensions.dart';
 import 'package:nepflix/movies/application/now_playing_movie/now_playing_movie_cubit.dart';
 import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dart';
 import 'package:nepflix/movies/domain/movie.dart';
@@ -9,8 +10,27 @@ import 'package:nepflix/movies/presentation/shimmers/movie_card_shimmer.dart';
 import 'package:nepflix/movies/presentation/shimmers/now_playing_movie_card_shimmer.dart';
 import 'package:nepflix/movies/presentation/widgets/movie_card.dart';
 
-class MovieScreen extends StatelessWidget {
+class MovieScreen extends StatefulWidget {
   const MovieScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MovieScreen> createState() => _MovieScreenState();
+}
+
+class _MovieScreenState extends State<MovieScreen> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    _scrollController.addListener(() {
+      if (_scrollController.offset >=
+              _scrollController.position.maxScrollExtent &&
+          !_scrollController.position.outOfRange) {
+        context.read<PopularMovieCubit>().getPopularMovies();
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +39,7 @@ class MovieScreen extends StatelessWidget {
 
     return Scaffold(
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: [
           SliverToBoxAdapter(
             child: Column(
@@ -52,6 +73,10 @@ class MovieScreen extends StatelessWidget {
                           .map((movie) => _nowPlayingMovieCard(context, movie))
                           .toList(),
                     ),
+                  ),
+                  failure: (message) => Center(
+                    heightFactor: 5,
+                    child: Text(message),
                   ),
                   orElse: () => SizedBox(),
                 ),
@@ -116,7 +141,7 @@ class MovieScreen extends StatelessWidget {
             ),
           ),
           popularMoviesState.maybeWhen(
-            loading: () => SliverPadding(
+            loading: (_) => SliverPadding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               sliver: SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -127,11 +152,11 @@ class MovieScreen extends StatelessWidget {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) => const MovieCardShimmer(),
-                  childCount: 8,
+                  childCount: 10,
                 ),
               ),
             ),
-            loaded: (popularMovies) => SliverPadding(
+            loaded: (popularMovies, hasReachedEnd) => SliverPadding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               sliver: SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -141,11 +166,23 @@ class MovieScreen extends StatelessWidget {
                   childAspectRatio: 2 / 3,
                 ),
                 delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) => MovieCard(
-                    movie: popularMovies[index],
-                  ),
-                  childCount: popularMovies.length,
+                  (BuildContext context, int index) {
+                    return (index >= popularMovies.length)
+                        ? const ShimmerWidget.rectangular(height: 20)
+                        : MovieCard(
+                            movie: popularMovies[index],
+                          );
+                  },
+                  childCount: !hasReachedEnd
+                      ? popularMovies.length + 2
+                      : popularMovies.length,
                 ),
+              ),
+            ),
+            failure: (_, message) => SliverToBoxAdapter(
+              child: Center(
+                heightFactor: 35,
+                child: Text(message),
               ),
             ),
             orElse: () => SliverToBoxAdapter(child: SizedBox()),
@@ -174,7 +211,7 @@ class MovieScreen extends StatelessWidget {
         ),
         Positioned.fill(
           child: Container(
-            width: double.maxFinite,
+            margin: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [Colors.transparent, Colors.black.withOpacity(0.8)],

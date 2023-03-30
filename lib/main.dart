@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepflix/core/infrastructure/shared/app_theme.dart';
+import 'package:nepflix/core/shared/app_theme.dart';
 import 'package:nepflix/movies/application/now_playing_movie/now_playing_movie_cubit.dart';
 import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dart';
 import 'package:nepflix/movies/infrastructure/movies_remote_service.dart';
 import 'package:nepflix/movies/infrastructure/movies_repository.dart';
-import 'package:nepflix/movies/presentation/movie_screen.dart';
+import 'package:nepflix/movies/presentation/screens/movie_screen.dart';
 
 void main() {
   runApp(const MyApp());

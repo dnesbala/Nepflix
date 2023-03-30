@@ -8,12 +8,13 @@ class MovieRemoteService {
 
   MovieRemoteService(this.dio);
 
-  Future<MoviesResultDTO> getPopularMovies() async {
+  Future<MoviesResultDTO> getPopularMovies({int page = 1}) async {
     try {
       final response = await dio.get(
         "https://api.themoviedb.org/3/movie/popular",
         queryParameters: {
           "api_key": "4130fb2a642d3801adc666aa95e857d5",
+          "page": page,
         },
       );
       return MoviesResultDTO.fromJson(response.data);

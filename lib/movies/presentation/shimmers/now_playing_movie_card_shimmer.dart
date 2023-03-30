@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nepflix/core/infrastructure/shared/app_extensions.dart';
 import 'package:nepflix/core/presentation/shimmer_widget.dart';
+import 'package:nepflix/core/shared/app_extensions.dart';
 
 class NowPlayingMovieCardShimmer extends StatelessWidget {
   const NowPlayingMovieCardShimmer({Key? key}) : super(key: key);

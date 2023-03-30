@@ -9,12 +9,13 @@ class MoviesRepository {
 
   MoviesRepository(this.remoteService);
 
-  Future<Either<MoviesFailure, MoviesResult>> getPopularMovies() async {
+  Future<Either<MoviesFailure, MoviesResult>> getPopularMovies(
+      {int page = 1}) async {
     try {
-      final popularMovies = await remoteService.getPopularMovies();
+      final popularMovies = await remoteService.getPopularMovies(page: page);
       return right(popularMovies.toDomain());
     } on RestApiException catch (e) {
-      throw left(MoviesFailure.api(errorMessage: e.message));
+      return left(MoviesFailure.api(errorMessage: e.message));
     }
   }
 
@@ -23,7 +24,7 @@ class MoviesRepository {
       final nowPlayingMovies = await remoteService.getNowPlayingMovies();
       return right(nowPlayingMovies.toDomain());
     } on RestApiException catch (e) {
-      throw left(MoviesFailure.api(errorMessage: e.message));
+      return left(MoviesFailure.api(errorMessage: e.message));
     }
   }
 }
