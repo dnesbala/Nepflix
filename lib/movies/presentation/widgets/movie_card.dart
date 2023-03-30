@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nepflix/core/shared/api_constants.dart';
 import 'package:nepflix/core/shared/app_extensions.dart';
+import 'package:nepflix/core/shared/app_router.dart';
 
 import 'package:nepflix/movies/domain/movie.dart';
 
@@ -14,8 +18,16 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
+    return GestureDetector(
+      onTap: () {
+        context.pushNamed(
+          AppRoutes.movieDetail,
+          params: {
+            "movieId": movie.id.toString(),
+          },
+          extra: movie,
+        );
+      },
       child: Stack(
         children: [
           Container(
