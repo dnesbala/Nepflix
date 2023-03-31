@@ -1,6 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nepflix/core/infrastructure/dio_client.dart';
 import 'package:nepflix/core/shared/app_router.dart';
 import 'package:nepflix/core/shared/app_theme.dart';
 import 'package:nepflix/movies/application/now_playing_movie/now_playing_movie_cubit.dart';
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => MoviesRepository(MovieRemoteService(Dio())),
+      create: (context) => MoviesRepository(MovieRemoteService(DioClient())),
       child: MultiBlocProvider(
         providers: [
           BlocProvider(

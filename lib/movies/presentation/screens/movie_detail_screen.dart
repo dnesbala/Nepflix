@@ -26,24 +26,8 @@ class MovieDetailScreen extends StatelessWidget {
                   height: 350,
                   width: context.deviceWidth,
                   fit: BoxFit.cover,
-                ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.black.withOpacity(0.2),
-                          Colors.black.withOpacity(0.4)
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                    ),
-                  ),
+                  color: Colors.black54,
+                  colorBlendMode: BlendMode.color,
                 ),
                 Positioned(
                   top: 40,

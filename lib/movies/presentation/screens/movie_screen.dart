@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nepflix/core/presentation/shimmer_widget.dart';
 import 'package:nepflix/core/shared/api_constants.dart';
 import 'package:nepflix/core/shared/app_extensions.dart';
+import 'package:nepflix/core/shared/app_router.dart';
 import 'package:nepflix/movies/application/now_playing_movie/now_playing_movie_cubit.dart';
 import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dart';
 import 'package:nepflix/movies/domain/movie.dart';
@@ -193,66 +195,75 @@ class _MovieScreenState extends State<MovieScreen> {
   }
 
   Widget _nowPlayingMovieCard(BuildContext context, Movie movie) {
-    return Stack(
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          height: 170,
-          width: context.deviceWidth * .8,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: NetworkImage(
-                "${ApiConstants.imageBasePath}/${movie.posterPath}",
-              ),
-            ),
-          ),
-        ),
-        Positioned.fill(
-          child: Container(
+    return GestureDetector(
+      onTap: () {
+        context.pushNamed(
+          AppRoutes.movieDetail,
+          params: {"movieId": movie.id.toString()},
+          extra: movie,
+        );
+      },
+      child: Stack(
+        children: [
+          Container(
             margin: const EdgeInsets.symmetric(horizontal: 10),
+            height: 170,
+            width: context.deviceWidth * .8,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: const [0.6, 0.95],
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                  "${ApiConstants.imageBasePath}/${movie.posterPath}",
+                ),
               ),
             ),
           ),
-        ),
-        Positioned(
-          left: 20,
-          bottom: 10,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                movie.title,
-                style: context.textTheme.headline5!.copyWith(
-                  color: Colors.white,
+          Positioned.fill(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: const [0.6, 0.95],
                 ),
               ),
-              const SizedBox(height: 2),
-              Text(
-                "${movie.releaseDate}",
-                style: context.textTheme.subtitle1!.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                "${movie.voteAverage} stars (${movie.voteCount})",
-                style: context.textTheme.subtitle1!.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ],
+          Positioned(
+            left: 20,
+            bottom: 10,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  movie.title,
+                  style: context.textTheme.headline5!.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  "${movie.releaseDate}",
+                  style: context.textTheme.subtitle1!.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  "${movie.voteAverage} stars (${movie.voteCount})",
+                  style: context.textTheme.subtitle1!.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
