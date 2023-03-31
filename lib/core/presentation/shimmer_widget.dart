@@ -4,19 +4,17 @@ import 'package:shimmer/shimmer.dart';
 class ShimmerWidget extends StatelessWidget {
   final double height;
   final double width;
-  final ShapeBorder shapeBorder;
+  final double? borderRadius;
 
-  const ShimmerWidget({
-    Key? key,
-    required this.height,
-    required this.width,
-    required this.shapeBorder,
-  }) : super(key: key);
+  const ShimmerWidget(
+      {Key? key, required this.height, required this.width, this.borderRadius})
+      : super(key: key);
 
   const ShimmerWidget.rectangular({
     this.width = double.maxFinite,
     required this.height,
-  }) : shapeBorder = const RoundedRectangleBorder();
+    this.borderRadius = 0,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,9 @@ class ShimmerWidget extends StatelessWidget {
         height: height,
         width: width,
         decoration: ShapeDecoration(
-          shape: shapeBorder,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius ?? 0),
+          ),
           color: Colors.grey,
         ),
       ),

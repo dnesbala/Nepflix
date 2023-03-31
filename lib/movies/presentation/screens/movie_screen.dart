@@ -5,11 +5,15 @@ import 'package:nepflix/core/presentation/shimmer_widget.dart';
 import 'package:nepflix/core/shared/api_constants.dart';
 import 'package:nepflix/core/shared/app_extensions.dart';
 import 'package:nepflix/core/shared/app_router.dart';
+import 'package:nepflix/genres/application/genre/genre_cubit.dart';
+import 'package:nepflix/genres/domain/genre.dart';
 import 'package:nepflix/movies/application/now_playing_movie/now_playing_movie_cubit.dart';
 import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dart';
 import 'package:nepflix/movies/domain/movie.dart';
+import 'package:nepflix/movies/presentation/shimmers/action_chip_shimmer.dart';
 import 'package:nepflix/movies/presentation/shimmers/movie_card_shimmer.dart';
 import 'package:nepflix/movies/presentation/shimmers/now_playing_movie_card_shimmer.dart';
+import 'package:nepflix/movies/presentation/widgets/genre_list.dart';
 import 'package:nepflix/movies/presentation/widgets/movie_card.dart';
 
 class MovieScreen extends StatefulWidget {
@@ -38,6 +42,7 @@ class _MovieScreenState extends State<MovieScreen> {
   Widget build(BuildContext context) {
     final nowPlayingMoviesState = context.watch<NowPlayingMovieCubit>().state;
     final popularMoviesState = context.watch<PopularMovieCubit>().state;
+    final genreListState = context.watch<GenreCubit>().state;
 
     return Scaffold(
       body: CustomScrollView(
@@ -91,55 +96,14 @@ class _MovieScreenState extends State<MovieScreen> {
             elevation: 0,
             expandedHeight: 0,
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    ActionChip(
-                      backgroundColor: Color(0xFFEF1736),
-                      label: const Text(
-                        "All",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+              preferredSize: const Size.fromHeight(0),
+              child: genreListState.maybeWhen(
+                  loading: () => const ActionChipShimmer(),
+                  loaded: (genres) => SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: GenreList(genres: genres),
                       ),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(width: 5),
-                    ActionChip(
-                      label: const Text("Horror"),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(width: 5),
-                    ActionChip(
-                      label: const Text("Romance"),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(width: 5),
-                    ActionChip(
-                      label: const Text("Biography"),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(width: 5),
-                    ActionChip(
-                      label: const Text("Science & Fiction"),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(width: 5),
-                    ActionChip(
-                      label: const Text("Action"),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(width: 5),
-                    ActionChip(
-                      label: const Text("Thriller"),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(width: 5),
-                  ],
-                ),
-              ),
+                  orElse: () => SizedBox()),
             ),
           ),
           popularMoviesState.maybeWhen(
@@ -187,7 +151,9 @@ class _MovieScreenState extends State<MovieScreen> {
                 child: Text(message),
               ),
             ),
-            orElse: () => SliverToBoxAdapter(child: SizedBox()),
+            orElse: () => SliverToBoxAdapter(
+              child: SizedBox(),
+            ),
           ),
         ],
       ),
@@ -210,6 +176,7 @@ class _MovieScreenState extends State<MovieScreen> {
             height: 170,
             width: context.deviceWidth * .8,
             decoration: BoxDecoration(
+              color: Colors.grey,
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
                 fit: BoxFit.cover,
@@ -265,5 +232,29 @@ class _MovieScreenState extends State<MovieScreen> {
         ],
       ),
     );
+  }
+
+  List<Widget> _buildActionChips(List<Genre> genres) {
+    return genres.map((genre) {
+      var isSelected = false;
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 2),
+        child: ActionChip(
+          onPressed: () {
+            print(genre.id);
+            setState(() {
+              isSelected = !isSelected;
+            });
+          },
+          backgroundColor: isSelected ? Color(0xFFEF1736) : Colors.black,
+          label: Text(
+            genre.name,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+    }).toList();
   }
 }

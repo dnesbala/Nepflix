@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepflix/core/infrastructure/dio_client.dart';
 import 'package:nepflix/core/shared/app_router.dart';
 import 'package:nepflix/core/shared/app_theme.dart';
+import 'package:nepflix/genres/application/genre/genre_cubit.dart';
+import 'package:nepflix/genres/infrastructure/genre_remote_service.dart';
+import 'package:nepflix/genres/infrastructure/genre_repository.dart';
 import 'package:nepflix/movies/application/now_playing_movie/now_playing_movie_cubit.dart';
 import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dart';
 import 'package:nepflix/movies/infrastructure/movies_remote_service.dart';
@@ -17,8 +20,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => MoviesRepository(MovieRemoteService(DioClient())),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+            create: (context) =>
+                MoviesRepository(MovieRemoteService(DioClient()))),
+        RepositoryProvider(
+            create: (context) =>
+                GenreRepository(GenreRemoteService(DioClient()))),
+      ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -30,6 +40,10 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 NowPlayingMovieCubit(context.read<MoviesRepository>())
                   ..getNowPlayingMovies(),
+          ),
+          BlocProvider(
+            create: (context) =>
+                GenreCubit((context.read<GenreRepository>()))..getGenres(),
           ),
         ],
         child: MaterialApp.router(

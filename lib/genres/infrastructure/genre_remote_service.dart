@@ -16,7 +16,7 @@ class GenreRemoteService {
           .get("https://api.themoviedb.org/3/genre/movie/list");
       if (response.statusCode == 200) {
         return List<GenreDTO>.from(
-            (response.data as List).map((e) => GenreDTO.fromJson(e)));
+            (response.data["genres"] as List).map((e) => GenreDTO.fromJson(e)));
       }
       throw Exception("Failed to fetch genre list");
     } on DioError catch (e) {

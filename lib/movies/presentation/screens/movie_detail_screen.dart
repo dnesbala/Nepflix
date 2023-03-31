@@ -21,13 +21,16 @@ class MovieDetailScreen extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Image.network(
-                  "${ApiConstants.imageBasePath}/${movie.backdropPath}",
-                  height: 350,
-                  width: context.deviceWidth,
-                  fit: BoxFit.cover,
-                  color: Colors.black54,
-                  colorBlendMode: BlendMode.color,
+                Container(
+                  color: Colors.grey,
+                  child: Image.network(
+                    "${ApiConstants.imageBasePath}/${movie.backdropPath}",
+                    height: 350,
+                    width: context.deviceWidth,
+                    fit: BoxFit.cover,
+                    color: Colors.black54,
+                    colorBlendMode: BlendMode.color,
+                  ),
                 ),
                 Positioned(
                   top: 40,
