@@ -6,10 +6,12 @@ import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dar
 
 class GenreList extends StatefulWidget {
   final List<Genre> genres;
+  final VoidCallback resetPage;
 
   const GenreList({
     Key? key,
     required this.genres,
+    required this.resetPage,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,8 @@ class _GenreListState extends State<GenreList> {
             _selectedGenre = null;
             _isAllSelected = true;
           });
+          widget.resetPage();
+          context.read<PopularMovieCubit>().getPopularMovies();
         },
         backgroundColor: _isAllSelected ? Color(0xFFEF1736) : Colors.black,
         label: const Text(
@@ -48,6 +52,10 @@ class _GenreListState extends State<GenreList> {
                     _selectedGenre = genre;
                     _isAllSelected = false;
                   });
+                  widget.resetPage();
+                  context
+                      .read<PopularMovieCubit>()
+                      .getMoviesByGenre(_selectedGenre!.id);
                 },
                 backgroundColor:
                     _selectedGenre == genre ? Color(0xFFEF1736) : Colors.black,

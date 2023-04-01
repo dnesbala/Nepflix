@@ -15,21 +15,39 @@ class PopularMovieCubit extends Cubit<PopularMovieState> {
     this._repository,
   ) : super(const PopularMovieState.initial([]));
 
-  int _page = 1;
-
-  Future<void> getPopularMovies() async {
+  Future<void> getPopularMovies({int page = 1}) async {
     emit(PopularMovieState.loading(state.movies));
-    final movieOrFailure = await _repository.getPopularMovies(page: _page);
+    final movieOrFailure = await _repository.getPopularMovies(page: page);
     emit(
       movieOrFailure.fold(
         (l) => PopularMovieState.failure(state.movies, l.errorMessage ?? ""),
         (r) {
-          _page++;
+          if (page == 1) {
+            return PopularMovieState.loaded(
+              r.results,
+              hasReachedEnd: r.results.isEmpty,
+            );
+          }
+          page++;
           return PopularMovieState.loaded(
             [...state.movies, ...r.results],
             hasReachedEnd: r.results.isEmpty,
           );
         },
+      ),
+    );
+  }
+
+  Future<void> getMoviesByGenre(int genreId) async {
+    emit(PopularMovieState.loading(state.movies));
+    final movieOrFailure = await _repository.getMoviesByGenre(genreId);
+    emit(
+      movieOrFailure.fold(
+        (l) => PopularMovieState.failure(state.movies, l.errorMessage ?? ""),
+        (r) => PopularMovieState.loaded(
+          r.results,
+          hasReachedEnd: r.results.isEmpty,
+        ),
       ),
     );
   }

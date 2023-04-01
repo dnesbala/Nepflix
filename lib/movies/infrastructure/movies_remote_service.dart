@@ -38,4 +38,22 @@ class MovieRemoteService {
       }
     }
   }
+
+  Future<MoviesResultDTO> getMoviesByGenre(int genreID) async {
+    try {
+      final response = await _dioClient.dio.get(
+        "https://api.themoviedb.org/3/discover/movie",
+        queryParameters: {
+          "with_genres": genreID,
+        },
+      );
+      return MoviesResultDTO.fromJson(response.data);
+    } on DioError catch (e) {
+      if (e.isNoConnectionError) {
+        throw RestApiException(message: "No Internet Connection");
+      } else {
+        throw RestApiException(message: e.message ?? "");
+      }
+    }
+  }
 }

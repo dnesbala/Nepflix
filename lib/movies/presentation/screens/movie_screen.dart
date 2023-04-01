@@ -25,6 +25,13 @@ class MovieScreen extends StatefulWidget {
 
 class _MovieScreenState extends State<MovieScreen> {
   final _scrollController = ScrollController();
+  int page = 1;
+
+  void resetPage() {
+    setState(() {
+      page = 1;
+    });
+  }
 
   @override
   void initState() {
@@ -32,7 +39,9 @@ class _MovieScreenState extends State<MovieScreen> {
       if (_scrollController.offset >=
               _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange) {
-        context.read<PopularMovieCubit>().getPopularMovies();
+        print(page);
+        page++;
+        context.read<PopularMovieCubit>().getPopularMovies(page: page);
       }
     });
     super.initState();
@@ -101,7 +110,10 @@ class _MovieScreenState extends State<MovieScreen> {
                   loading: () => const ActionChipShimmer(),
                   loaded: (genres) => SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: GenreList(genres: genres),
+                        child: GenreList(
+                          genres: genres,
+                          resetPage: resetPage,
+                        ),
                       ),
                   orElse: () => SizedBox()),
             ),
@@ -133,11 +145,13 @@ class _MovieScreenState extends State<MovieScreen> {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return (index >= popularMovies.length)
-                        ? const ShimmerWidget.rectangular(height: 20)
-                        : MovieCard(
-                            movie: popularMovies[index],
-                          );
+                    if ((index >= popularMovies.length)) {
+                      return const ShimmerWidget.rectangular(height: 20);
+                    } else {
+                      return MovieCard(
+                        movie: popularMovies[index],
+                      );
+                    }
                   },
                   childCount: !hasReachedEnd
                       ? popularMovies.length + 2

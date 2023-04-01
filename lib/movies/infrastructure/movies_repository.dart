@@ -27,4 +27,14 @@ class MoviesRepository {
       return left(MoviesFailure.api(errorMessage: e.message));
     }
   }
+
+  Future<Either<MoviesFailure, MoviesResult>> getMoviesByGenre(
+      int genreId) async {
+    try {
+      final nowPlayingMovies = await remoteService.getMoviesByGenre(genreId);
+      return right(nowPlayingMovies.toDomain());
+    } on RestApiException catch (e) {
+      return left(MoviesFailure.api(errorMessage: e.message));
+    }
+  }
 }
