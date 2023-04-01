@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nepflix/core/shared/api_constants.dart';
@@ -7,6 +8,7 @@ import 'package:nepflix/core/shared/app_extensions.dart';
 import 'package:nepflix/core/shared/app_router.dart';
 
 import 'package:nepflix/movies/domain/movie.dart';
+import 'package:nepflix/movies/presentation/shimmers/movie_card_shimmer.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -30,16 +32,19 @@ class MovieCard extends StatelessWidget {
       },
       child: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                    "${ApiConstants.imageBasePath}/${movie.posterPath}"),
+          CachedNetworkImage(
+            imageUrl: "${ApiConstants.imageBasePath}/${movie.posterPath}",
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: imageProvider,
+                ),
               ),
             ),
+            placeholder: (_, __) => const MovieCardShimmer(),
           ),
           Positioned(
             child: Container(

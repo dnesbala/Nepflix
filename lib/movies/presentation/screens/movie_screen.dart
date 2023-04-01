@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -185,18 +186,31 @@ class _MovieScreenState extends State<MovieScreen> {
       },
       child: Stack(
         children: [
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            height: 170,
-            width: context.deviceWidth * .8,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                  "${ApiConstants.imageBasePath}/${movie.posterPath}",
+          CachedNetworkImage(
+            imageUrl: "${ApiConstants.imageBasePath}/${movie.posterPath}",
+            imageBuilder: (context, imageProvider) => Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              height: 170,
+              width: context.deviceWidth * .8,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: imageProvider,
                 ),
+              ),
+            ),
+            placeholder: (_, __) => SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  NowPlayingMovieCardShimmer(),
+                  NowPlayingMovieCardShimmer(),
+                  NowPlayingMovieCardShimmer(),
+                  NowPlayingMovieCardShimmer(),
+                  NowPlayingMovieCardShimmer(),
+                ],
               ),
             ),
           ),
