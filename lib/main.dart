@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepflix/core/infrastructure/dio_client.dart';
 import 'package:nepflix/core/shared/app_router.dart';
 import 'package:nepflix/core/shared/app_theme.dart';
+import 'package:nepflix/firebase_options.dart';
 import 'package:nepflix/genres/application/genre/genre_cubit.dart';
 import 'package:nepflix/genres/infrastructure/genre_remote_service.dart';
 import 'package:nepflix/genres/infrastructure/genre_repository.dart';
@@ -11,7 +13,10 @@ import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dar
 import 'package:nepflix/movies/infrastructure/movies_remote_service.dart';
 import 'package:nepflix/movies/infrastructure/movies_repository.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
