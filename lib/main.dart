@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:nepflix/auth/application/auth/auth_cubit.dart';
+import 'package:nepflix/auth/infrastructure/auth_remote_service.dart';
+import 'package:nepflix/auth/infrastructure/auth_repository.dart';
 import 'package:nepflix/core/infrastructure/dio_client.dart';
 import 'package:nepflix/core/shared/app_router.dart';
 import 'package:nepflix/core/shared/app_theme.dart';
@@ -14,6 +19,7 @@ import 'package:nepflix/movies/infrastructure/movies_remote_service.dart';
 import 'package:nepflix/movies/infrastructure/movies_repository.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -28,11 +34,23 @@ class MyApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-            create: (context) =>
-                MoviesRepository(MovieRemoteService(DioClient()))),
+          create: (context) => MoviesRepository(
+            MovieRemoteService(DioClient()),
+          ),
+        ),
         RepositoryProvider(
-            create: (context) =>
-                GenreRepository(GenreRemoteService(DioClient()))),
+          create: (context) => GenreRepository(
+            GenreRemoteService(DioClient()),
+          ),
+        ),
+        RepositoryProvider(
+          create: (context) => AuthRepositoryImpl(
+            authRemoteService: AuthRemoteServiceImpl(
+              firebaseAuth: FirebaseAuth.instance,
+              googleSignIn: GoogleSignIn(),
+            ),
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -50,15 +68,21 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 GenreCubit((context.read<GenreRepository>()))..getGenres(),
           ),
+          BlocProvider(
+            create: (context) => AuthCubit(context.read<AuthRepositoryImpl>()),
+          ),
         ],
-        child: MaterialApp.router(
-          routerDelegate: AppRouter().router.routerDelegate,
-          routeInformationProvider: AppRouter().router.routeInformationProvider,
-          routeInformationParser: AppRouter().router.routeInformationParser,
-          debugShowCheckedModeBanner: false,
-          title: 'Nepflix',
-          theme: AppTheme.lightTheme(),
-        ),
+        child: Builder(builder: (context) {
+          return MaterialApp.router(
+            routerConfig: AppRouter(context.watch<AuthCubit>()).router,
+            // routerDelegate: AppRouter(context.read<AuthCubit>()).router.routerDelegate,
+            // routeInformationProvider: AppRouter().router.routeInformationProvider,
+            // routeInformationParser: AppRouter().router.routeInformationParser,
+            debugShowCheckedModeBanner: false,
+            title: 'Nepflix',
+            theme: AppTheme.lightTheme(),
+          );
+        }),
       ),
     );
   }
