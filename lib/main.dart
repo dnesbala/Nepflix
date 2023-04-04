@@ -74,9 +74,10 @@ class MyApp extends StatelessWidget {
         ],
         child: Builder(builder: (context) {
           return MaterialApp.router(
-            routerConfig: AppRouter(context.watch<AuthCubit>()).router,
-            // routerDelegate: AppRouter(context.read<AuthCubit>()).router.routerDelegate,
-            // routeInformationProvider: AppRouter().router.routeInformationProvider,
+            routerConfig: AppRouter(context.read<AuthCubit>()).router,
+            // routerDelegate: AppRouter().router.routerDelegate,
+            // routeInformationProvider:
+            //     AppRouter().router.routeInformationProvider,
             // routeInformationParser: AppRouter().router.routeInformationParser,
             debugShowCheckedModeBanner: false,
             title: 'Nepflix',
