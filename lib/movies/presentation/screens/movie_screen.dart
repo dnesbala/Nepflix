@@ -2,6 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nepflix/auth/application/auth/auth_cubit.dart';
+import 'package:nepflix/core/presentation/app_drawer.dart';
 import 'package:nepflix/core/presentation/shimmer_widget.dart';
 import 'package:nepflix/core/shared/api_constants.dart';
 import 'package:nepflix/core/shared/app_extensions.dart';
@@ -25,6 +28,8 @@ class MovieScreen extends StatefulWidget {
 }
 
 class _MovieScreenState extends State<MovieScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final _scrollController = ScrollController();
   int page = 1;
 
@@ -55,6 +60,13 @@ class _MovieScreenState extends State<MovieScreen> {
     final genreListState = context.watch<GenreCubit>().state;
 
     return Scaffold(
+      key: _scaffoldKey,
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 0,
+        backgroundColor: Colors.black,
+      ),
+      drawer: const AppDrawer(),
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -63,10 +75,27 @@ class _MovieScreenState extends State<MovieScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 40, left: 10),
-                  child: Text(
-                    "Top Rated Movies",
-                    style: Theme.of(context).textTheme.headline4,
+                  padding: const EdgeInsets.only(top: 15, left: 10),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _scaffoldKey.currentState?.openDrawer();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Icon(
+                            MdiIcons.menu,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        "Top Rated Movies",
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 15),
