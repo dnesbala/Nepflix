@@ -6,6 +6,8 @@ class ReviewRemoteService {
   Future<void> addReview(ReviewDTO review) async {
     try {
       await FirebaseFirestore.instance
+          .collection("movies")
+          .doc(review.movieId.toString())
           .collection("reviews")
           .doc()
           .set(review.toJson());

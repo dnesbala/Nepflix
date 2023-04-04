@@ -6,7 +6,6 @@ part 'review.freezed.dart';
 class Review with _$Review {
   const Review._();
   const factory Review({
-    required String id,
     required String description,
     required double rating,
     required String createdBy,

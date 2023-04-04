@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:nepflix/auth/application/auth/auth_cubit.dart';
 import 'package:nepflix/core/presentation/app_drawer.dart';
 import 'package:nepflix/core/presentation/shimmer_widget.dart';
-import 'package:nepflix/core/shared/api_constants.dart';
+import 'package:nepflix/core/shared/app_constants.dart';
 import 'package:nepflix/core/shared/app_extensions.dart';
 import 'package:nepflix/core/shared/app_router.dart';
 import 'package:nepflix/genres/application/genre/genre_cubit.dart';
@@ -216,7 +215,7 @@ class _MovieScreenState extends State<MovieScreen> {
       child: Stack(
         children: [
           CachedNetworkImage(
-            imageUrl: "${ApiConstants.imageBasePath}/${movie.posterPath}",
+            imageUrl: "${AppConstants.imageBasePath}/${movie.posterPath}",
             imageBuilder: (context, imageProvider) => Container(
               margin: const EdgeInsets.symmetric(horizontal: 10),
               height: 170,
@@ -303,7 +302,8 @@ class _MovieScreenState extends State<MovieScreen> {
               isSelected = !isSelected;
             });
           },
-          backgroundColor: isSelected ? Color(0xFFEF1736) : Colors.black,
+          backgroundColor:
+              isSelected ? AppConstants.primaryColor : Colors.black,
           label: Text(
             genre.name,
             style: TextStyle(

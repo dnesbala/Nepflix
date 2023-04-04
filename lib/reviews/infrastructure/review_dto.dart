@@ -9,7 +9,6 @@ part 'review_dto.g.dart';
 class ReviewDTO with _$ReviewDTO {
   const ReviewDTO._();
   const factory ReviewDTO({
-    required String id,
     required String description,
     required double rating,
     required String createdBy,
@@ -22,7 +21,6 @@ class ReviewDTO with _$ReviewDTO {
 
   factory ReviewDTO.fromSnapshot(DocumentSnapshot snapshot) {
     return ReviewDTO(
-      id: snapshot.id,
       movieId: snapshot["movieId"],
       createdBy: snapshot["createdBy"],
       createdOn: snapshot["createdOn"].toDate(),
@@ -33,7 +31,6 @@ class ReviewDTO with _$ReviewDTO {
 
   factory ReviewDTO.fromDomain(Review _) {
     return ReviewDTO(
-      id: _.id,
       description: _.description,
       rating: _.rating,
       createdBy: _.createdBy,
@@ -44,7 +41,6 @@ class ReviewDTO with _$ReviewDTO {
 
   Review toDomain() {
     return Review(
-      id: id,
       description: description,
       rating: rating,
       createdBy: createdBy,

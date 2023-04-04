@@ -28,4 +28,8 @@ class AuthCubit extends Cubit<AuthState> {
     await _repository.signOut();
     emit(const AuthState.unauthenticated());
   }
+
+  User? getCurrentUser() {
+    return _repository.getCurrentUser();
+  }
 }

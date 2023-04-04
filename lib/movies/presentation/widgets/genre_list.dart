@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nepflix/core/shared/app_constants.dart';
 
 import 'package:nepflix/genres/domain/genre.dart';
 import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dart';
@@ -34,7 +35,8 @@ class _GenreListState extends State<GenreList> {
           widget.resetPage();
           context.read<PopularMovieCubit>().getPopularMovies();
         },
-        backgroundColor: _isAllSelected ? Color(0xFFEF1736) : Colors.black,
+        backgroundColor:
+            _isAllSelected ? AppConstants.primaryColor : Colors.black,
         label: const Text(
           "All",
           style: TextStyle(
@@ -57,8 +59,9 @@ class _GenreListState extends State<GenreList> {
                       .read<PopularMovieCubit>()
                       .getMoviesByGenre(_selectedGenre!.id);
                 },
-                backgroundColor:
-                    _selectedGenre == genre ? Color(0xFFEF1736) : Colors.black,
+                backgroundColor: _selectedGenre == genre
+                    ? AppConstants.primaryColor
+                    : Colors.black,
                 label: Text(
                   genre.name,
                   style: TextStyle(

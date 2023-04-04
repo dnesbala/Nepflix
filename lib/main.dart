@@ -17,6 +17,9 @@ import 'package:nepflix/movies/application/now_playing_movie/now_playing_movie_c
 import 'package:nepflix/movies/application/popular_movie/popular_movie_cubit.dart';
 import 'package:nepflix/movies/infrastructure/movies_remote_service.dart';
 import 'package:nepflix/movies/infrastructure/movies_repository.dart';
+import 'package:nepflix/reviews/application/review/review_cubit.dart';
+import 'package:nepflix/reviews/infrastructure/review_remote_service.dart';
+import 'package:nepflix/reviews/infrastructure/review_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +54,11 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        RepositoryProvider(
+          create: (context) => ReviewRepository(
+            ReviewRemoteService(),
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -70,6 +78,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => AuthCubit(context.read<AuthRepositoryImpl>()),
+          ),
+          BlocProvider(
+            create: (context) => ReviewCubit(context.read<ReviewRepository>()),
           ),
         ],
         child: Builder(builder: (context) {

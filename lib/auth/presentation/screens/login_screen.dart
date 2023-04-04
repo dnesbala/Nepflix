@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nepflix/auth/application/auth/auth_cubit.dart';
+import 'package:nepflix/core/shared/app_constants.dart';
 import 'package:nepflix/core/shared/app_extensions.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -60,7 +61,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(Color(0xFFEF1736)),
+                        MaterialStateProperty.all(AppConstants.primaryColor),
                     fixedSize: MaterialStateProperty.all(
                         Size(context.deviceWidth, 50)),
                   ),

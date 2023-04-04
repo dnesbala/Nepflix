@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nepflix/core/shared/api_constants.dart';
+import 'package:nepflix/core/shared/app_constants.dart';
 import 'package:nepflix/core/shared/app_extensions.dart';
 import 'package:nepflix/core/shared/app_router.dart';
 
@@ -33,7 +31,7 @@ class MovieCard extends StatelessWidget {
       child: Stack(
         children: [
           CachedNetworkImage(
-            imageUrl: "${ApiConstants.imageBasePath}/${movie.posterPath}",
+            imageUrl: "${AppConstants.imageBasePath}/${movie.posterPath}",
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
                 color: Colors.grey,
